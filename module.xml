@@ -9,15 +9,6 @@
       <Packaging>module</Packaging>
       <SourcesRoot>src</SourcesRoot>
       <Resource Name="dc.fhirquestions.PKG"/>
-      
-      <CSPApplication
-        Url="/fhirUI"
-        SourcePath="/fhirUI"
-        DeployPath="{$cspdir}/fhirUI"
-        ServeFiles="1"
-        Recurse="1"
-        CookiePath="/fhirUI"
-       />
        
        <CSPApplication 
         Url="/csp/fhirquestions"

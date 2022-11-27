@@ -24,5 +24,12 @@
     zw ##class(HS.FHIRServer.Tools.DataLoader).SubmitResourceFiles("/opt/irisapp/fhirdata/", "FHIRServer", appKey)
 
     do $System.OBJ.LoadDir("/opt/irisapp/src","ck",,1)
+
+    zn "%SYS"
+    Do ##class(Security.Users).UnExpireUserPasswords("*")
+
+    zn "FHIRSERVER"
+    zpm "load /opt/irisapp/ -v":1:1
+
     //zpm "install fhir-portal"
     halt

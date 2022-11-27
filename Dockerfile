@@ -8,10 +8,10 @@ RUN chown ${ISC_PACKAGE_MGRUSER}:${ISC_PACKAGE_IRISGROUP} /opt/irisapp
 
 USER ${ISC_PACKAGE_MGRUSER}
 
-COPY  src src
+COPY src src
+COPY module.xml module.xml
 COPY data/fhir fhirdata
 COPY iris.script /tmp/iris.script
-COPY fhirUI /usr/irissys/csp/user/fhirUI
 
 USER root
 RUN chmod -R 777 /opt/irisapp/fhirdata
