@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Export generator="Cache" version="25">
-  <Document name="fhir-ui-sample.ZPM">
+  <Document name="fhir-questions.ZPM">
     <Module>
-      <Name>fhir-ui-sample</Name>
+      <Name>fhir-questions</Name>
       <Version>1.0.0</Version>
-      <Description>Sample frontend for FHIR application</Description>
-      <Keywords>FHIR,Frontend</Keywords>
+      <Description>FHIR application for Questionnairies</Description>
+      <Keywords>FHIR,Frontend,Backend</Keywords>
       <Packaging>module</Packaging>
+      <SourcesRoot>src</SourcesRoot>
+      <Resource Name="dc.fhirquestions.PKG"/>
+      
       <CSPApplication
         Url="/fhirUI"
         SourcePath="/fhirUI"
@@ -15,6 +18,18 @@
         Recurse="1"
         CookiePath="/fhirUI"
        />
+       
+       <CSPApplication 
+        Url="/csp/fhirquestions"
+        DispatchClass="dc.fhirquestions.FHIRQuestionsRESTApp"
+        MatchRoles=":{$dbrole}"
+        PasswordAuthEnabled="1"
+        UnauthenticatedEnabled="1"
+        Recurse="1"
+        UseCookies="2"
+        CookiePath="/csp/fhirquestions"
+      />
+      
     </Module>
   </Document>
 </Export>

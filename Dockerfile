@@ -1,4 +1,4 @@
-ARG IMAGE=intersystemsdc/irishealth-community:latest
+ARG IMAGE=intersystemsdc/irishealth-community:2022.3.0.539.0-zpm
 FROM $IMAGE
 
 USER root
@@ -12,6 +12,11 @@ COPY  src src
 COPY data/fhir fhirdata
 COPY iris.script /tmp/iris.script
 COPY fhirUI /usr/irissys/csp/user/fhirUI
+
+USER root
+RUN chmod -R 777 /opt/irisapp/fhirdata
+
+USER ${ISC_PACKAGE_MGRUSER}
 
 # run iris and initial 
 RUN iris start IRIS \

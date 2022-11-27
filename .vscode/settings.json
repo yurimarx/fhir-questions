@@ -5,19 +5,33 @@
         "iris.script": "objectscript"
       },
     "objectscript.conn" :{
-      "ns": "FHIRSERVER",
       "active": true,
-      "username":"_SYSTEM",
+      "host": "localhost",
+      "username": "_SYSTEM",
       "password": "SYS",
-      "docker-compose": {
-        "service": "iris",
-        "internalPort": 52773
-      },"links": {
+      "port": 52773,
+      "ns": "FHIRSERVER",
+      "links": {
         "FHIR UI Portal": "http://localhost:${port}/fhir/portal/patientlist.html",
         "FHIR UI Demo": "http://localhost:${port}/csp/user/fhirUI/FHIRAppDemo.html",
         "FHIR server test": "http://localhost:${port}/fhir/r4/metadata"
       }
     },
+    "objectscript.export": {
+      "folder": "src",
+      "addCategory": false,
+      "map": {},
+      "atelier": true,
+      "generated": false,
+      "filter": "",
+      "exactFilter": "",
+      "category": "*",
+      "noStorage": false,
+      "dontExportIfNoChanges": false,
+      "maxConcurrentConnections": 0,
+      "mapped": true
+    },
+    "objectscript.conn.active": true,
     "sqltools.connections": [
       {
         "askForPassword": false,
