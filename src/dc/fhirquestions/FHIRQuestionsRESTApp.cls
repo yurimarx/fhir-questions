@@ -138,6 +138,31 @@ ClassMethod GetAllQuestionnaire() As %Status
     Quit tSC
 }
 
+/// Retreive a questionnaire by id
+ClassMethod GetQuestionnaire(id As %String) As %Status
+{
+
+    set tSC = $$$OK
+    Set %response.ContentType = ..#CONTENTTYPEJSON
+    Set %response.Headers("Access-Control-Allow-Origin")="*"
+
+    Try {
+        set fhirService = ##class(HS.FHIRServer.Service).EnsureInstance(..#URL)
+        set request = ##class(HS.FHIRServer.API.Data.Request).%New()
+        set request.RequestPath = "/Questionnaire/"_id
+        set request.RequestMethod = "GET"
+        do fhirService.DispatchRequest(request, .pResponse)
+        write pResponse.Json.%ToJSON()    
+    } Catch Err {
+        set tSC = 1
+        set message = {}
+        set message.type= "ERROR"
+        set message.details = "Error on get the questionnaire"       
+    }
+    
+    Quit tSC
+}
+
 /// Create questionnaire
 ClassMethod CreateQuestionnaire() As %Status
 {
@@ -163,6 +188,30 @@ ClassMethod CreateQuestionnaire() As %Status
   }
   
   Return tSC
+}
+
+/// Delete a questionnaire by id
+ClassMethod DeleteQuestionnaire(id As %String) As %Status
+{
+
+    set tSC = $$$OK
+    Set %response.ContentType = ..#CONTENTTYPEJSON
+    Set %response.Headers("Access-Control-Allow-Origin")="*"
+
+    Try {
+        set fhirService = ##class(HS.FHIRServer.Service).EnsureInstance(..#URL)
+        set request = ##class(HS.FHIRServer.API.Data.Request).%New()
+        set request.RequestPath = "/Questionnaire/"_id
+        set request.RequestMethod = "DELETE"
+        do fhirService.DispatchRequest(request, .pResponse)
+    } Catch Err {
+        set tSC = 1
+        set message = {}
+        set message.type= "ERROR"
+        set message.details = "Error on delete the questionnaire"       
+    }
+    
+    Quit tSC
 }
 
 }

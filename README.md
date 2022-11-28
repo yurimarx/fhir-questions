@@ -23,20 +23,8 @@ Open the terminal in this directory and run:
 $ docker-compose up -d
 ```
 
-## Testing FHIR R4 API
-
-Open URL http://localhost:52773/fhir/r4/metadata
-you should see the output of fhir resources on this server
-
-## Testing Postman calls
-Get fhir resources metadata
-GET call for http://localhost:52773/fhir/r4/metadata
-<img width="881" alt="Screenshot 2020-08-07 at 17 42 04" src="https://user-images.githubusercontent.com/2781759/89657453-c7cdac00-d8d5-11ea-8fed-71fa8447cc45.png">
-
-
-Open Postman and make a GET call for the preloaded Patient:
-http://localhost:32783/fhir/r4/Patient/1
-<img width="884" alt="Screenshot 2020-08-07 at 17 42 26" src="https://user-images.githubusercontent.com/2781759/89657252-71606d80-d8d5-11ea-957f-041dbceffdc8.png">
+## Web app frontend
+1. Open the webapp: http://localhost:52773/fhirquestions/index.html
 
 
 ## Development Resources
