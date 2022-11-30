@@ -31,6 +31,8 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <Route Url="/questionnaire/:id" Method="DELETE" Call="DeleteQuestionnaire"/>
 <!-- Create a questionnaire-->
 <Route Url="/questionnaire" Method="POST" Call="CreateQuestionnaire"/>
+<!-- update the questionnaire-->
+<Route Url="/questionnaire/:id" Method="PUT" Call="UpdateQuestionnaire"/>
 
 </Routes>
 }
@@ -190,6 +192,32 @@ ClassMethod CreateQuestionnaire() As %Status
   Return tSC
 }
 
+ClassMethod UpdateQuestionnaire(id As %String) As %Status
+{
+  set tSC = $$$OK
+  Set %response.ContentType = ..#CONTENTTYPEJSON
+  Set %response.Headers("Access-Control-Allow-Origin")="*"
+
+  Try {
+    set fhirService = ##class(HS.FHIRServer.Service).EnsureInstance(..#URL)
+    set request = ##class(HS.FHIRServer.API.Data.Request).%New()
+    set request.RequestPath = "/Questionnaire/"_id
+    set request.RequestMethod = "PUT"
+    set data = {}.%FromJSON(%request.Content)
+    set data.resourceType = "Questionnaire"
+    set request.Json = data
+    do fhirService.DispatchRequest(request, .response)
+    write response.Json.%ToJSON()
+  }Catch Err {
+    set tSC = 1
+    set message = {}
+    set message.type= "ERROR"
+    set message.details = "Error on update questionnaire"
+  }
+  Return tSC
+}
+
+/// Create questionnaire
 /// Delete a questionnaire by id
 ClassMethod DeleteQuestionnaire(id As %String) As %Status
 {
