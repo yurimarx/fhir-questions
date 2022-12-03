@@ -11,7 +11,18 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:52773/fhir/r4/Questionnaire/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"fhir",
+						"r4",
+						"Questionnaire",
+						""
+					]
 				}
 			},
 			"response": []
@@ -22,7 +33,18 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:52773/fhir/r4/Questionnaire/1984",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"fhir",
+						"r4",
+						"Questionnaire",
+						"1984"
+					]
 				}
 			},
 			"response": []
@@ -33,7 +55,18 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": ""
+					"raw": "http://localhost:52773/fhir/r4/QuestionnaireResponse/",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "52773",
+					"path": [
+						"fhir",
+						"r4",
+						"QuestionnaireResponse",
+						""
+					]
 				}
 			},
 			"response": []
