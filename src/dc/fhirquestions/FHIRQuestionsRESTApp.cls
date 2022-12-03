@@ -34,6 +34,20 @@ XData UrlMap [ XMLNamespace = "http://www.intersystems.com/urlmap" ]
 <!-- update the questionnaire-->
 <Route Url="/questionnaire/:id" Method="PUT" Call="UpdateQuestionnaire"/>
 
+<!-- Get all questionnairie responses -->
+<Route Url="/questionnaireResponse" Method="GET" Call="GetAllQuestionnaireResponse"/>
+<!-- Get a questionnarie response by id-->
+<Route Url="/questionnaireResponse/:id" Method="GET" Call="GetQuestionnaireResponse"/> 
+<!-- Update a questionnarie response by id-->
+<Route Url="/questionnaireResponse/:id" Method="PUT" Call="UpdateQuestionnaireResponse"/>
+<!-- Delete a questionnaire response by id-->
+<Route Url="/questionnaireResponse/:id" Method="DELETE" Call="DeleteQuestionnaireResponse"/>
+<!-- Create a questionnaire response-->
+<Route Url="/questionnaireResponse" Method="POST" Call="CreateQuestionnaireResponse"/>
+<!-- update the questionnaire response-->
+<Route Url="/questionnaireResponse/:id" Method="PUT" Call="UpdateQuestionnaireResponse"/>
+
+
 </Routes>
 }
 
@@ -108,7 +122,7 @@ ClassMethod SwaggerSpec() As %Status
   Return ..%ProcessResult($$$OK, swagger)
 }
 
-/// Retreive all the records of questionnaire
+/// Retrieve all the records of questionnaire
 ClassMethod GetAllQuestionnaire() As %Status
 {
 
@@ -192,6 +206,7 @@ ClassMethod CreateQuestionnaire() As %Status
   Return tSC
 }
 
+/// Update a questionnaire
 ClassMethod UpdateQuestionnaire(id As %String) As %Status
 {
   set tSC = $$$OK
@@ -217,7 +232,6 @@ ClassMethod UpdateQuestionnaire(id As %String) As %Status
   Return tSC
 }
 
-/// Create questionnaire
 /// Delete a questionnaire by id
 ClassMethod DeleteQuestionnaire(id As %String) As %Status
 {
@@ -237,6 +251,146 @@ ClassMethod DeleteQuestionnaire(id As %String) As %Status
         set message = {}
         set message.type= "ERROR"
         set message.details = "Error on delete the questionnaire"       
+    }
+    
+    Quit tSC
+}
+
+/// Retrieve all the records of questionnaire response
+ClassMethod GetAllQuestionnaireResponse() As %Status
+{
+
+    set tSC = $$$OK 
+    Set %response.ContentType = ..#CONTENTTYPEJSON
+    Set %response.Headers("Access-Control-Allow-Origin")="*"
+
+    Try {
+        set fhirService = ##class(HS.FHIRServer.Service).EnsureInstance(..#URL)
+        set request = ##class(HS.FHIRServer.API.Data.Request).%New()
+        set request.RequestPath = "/QuestionnaireResponse/"
+        set request.RequestMethod = "GET"
+        do fhirService.DispatchRequest(request, .pResponse)
+        set json = pResponse.Json
+        set resp = []
+        set iter = json.entry.%GetIterator()
+        while iter.%GetNext(.key, .value) { 
+          do resp.%Push(value.resource)
+        }
+        
+        write resp.%ToJSON()    
+    } Catch Err {
+        set tSC = 1
+        set message = {}
+        set message.type= "ERROR"
+        set message.details = "Error on get all questionnairies responses"       
+    }
+    
+    Quit tSC
+}
+
+/// Retreive a questionnaire response by id
+ClassMethod GetQuestionnaireResponse(id As %String) As %Status
+{
+
+    set tSC = $$$OK
+    Set %response.ContentType = ..#CONTENTTYPEJSON
+    Set %response.Headers("Access-Control-Allow-Origin")="*"
+
+    Try {
+        set fhirService = ##class(HS.FHIRServer.Service).EnsureInstance(..#URL)
+        set request = ##class(HS.FHIRServer.API.Data.Request).%New()
+        set request.RequestPath = "/QuestionnaireResponse/"_id
+        set request.RequestMethod = "GET"
+        do fhirService.DispatchRequest(request, .pResponse)
+        write pResponse.Json.%ToJSON()    
+    } Catch Err {
+        set tSC = 1
+        set message = {}
+        set message.type= "ERROR"
+        set message.details = "Error on get the questionnaire response"       
+    }
+    
+    Quit tSC
+}
+
+/// Create the questionnaire response
+ClassMethod CreateQuestionnaireResponse() As %Status
+{
+  set tSC = $$$OK
+  Set %response.ContentType = ..#CONTENTTYPEJSON
+  Set %response.Headers("Access-Control-Allow-Origin")="*"
+
+  Try {
+    set fhirService = ##class(HS.FHIRServer.Service).EnsureInstance(..#URL)
+    set request = ##class(HS.FHIRServer.API.Data.Request).%New()
+    set request.RequestPath = "/QuestionnaireResponse/"
+    set request.RequestMethod = "POST"
+    set data = {}.%FromJSON(%request.Content)
+    set data.resourceType = "QuestionnaireResponse"
+    set request.Json = data
+    do fhirService.DispatchRequest(request, .response)
+    
+    set request2 = ##class(HS.FHIRServer.API.Data.Request).%New()
+    set request2.RequestPath = response.Location
+    set request2.RequestMethod = "GET"
+    do fhirService.DispatchRequest(request2, .response2)
+    
+    write response2.Json.%ToJSON()
+  } Catch Err {
+    set tSC = 1
+    set message = {}
+    set message.type= "ERROR"
+    set message.details = "Error on create the questionnaire response"
+  }
+  
+  Return tSC
+}
+
+/// Update a questionnaire response
+ClassMethod UpdateQuestionnaireResponse(id As %String) As %Status
+{
+  set tSC = $$$OK
+  Set %response.ContentType = ..#CONTENTTYPEJSON
+  Set %response.Headers("Access-Control-Allow-Origin")="*"
+
+  Try {
+    set fhirService = ##class(HS.FHIRServer.Service).EnsureInstance(..#URL)
+    set request = ##class(HS.FHIRServer.API.Data.Request).%New()
+    set request.RequestPath = "/QuestionnaireResponse/"_id
+    set request.RequestMethod = "PUT"
+    set data = {}.%FromJSON(%request.Content)
+    set data.resourceType = "QuestionnaireResponse"
+    set request.Json = data
+    do fhirService.DispatchRequest(request, .response)
+    write response.Json.%ToJSON()
+  }Catch Err {
+    set tSC = 1
+    set message = {}
+    set message.type= "ERROR"
+    set message.details = "Error on update questionnaire response"
+  }
+  Return tSC
+}
+
+/// Delete a questionnaire response by id
+ClassMethod DeleteQuestionnaireResponse(id As %String) As %Status
+{
+
+    set tSC = $$$OK
+    Set %response.ContentType = ..#CONTENTTYPEJSON
+    Set %response.Headers("Access-Control-Allow-Origin")="*"
+
+    Try {
+        set fhirService = ##class(HS.FHIRServer.Service).EnsureInstance(..#URL)
+        set request = ##class(HS.FHIRServer.API.Data.Request).%New()
+        set request.RequestPath = "/QuestionnaireResponse/"_id
+        set request.RequestMethod = "DELETE"
+        do fhirService.DispatchRequest(request, .pResponse)
+    } Catch Err {
+        set tSC = 1
+        set message = {}
+        set message.type= "ERROR"
+        set message.details = "Error on delete the questionnaire response"       
     }
     
     Quit tSC
